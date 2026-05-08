@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Margaret Massage Hub | Unwind & Heal</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --sage: #8a9a5b; --earth: #5f6e4a; --sand: #fdfcf8; --gold: #b89d62; --text: #333; }
+        
+        * { box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--sand); margin: 0; color: var(--text); line-height: 1.6; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--earth); }
+
+        /* HERO SECTION */
+        .hero { height: 75vh; background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?auto=format&fit=crop&q=80'); background-size: cover; background-position: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; padding: 20px; }
+        .hero h1 { font-size: 48px; color: #fff; margin-bottom: 10px; }
+        .hero p { font-size: 18px; letter-spacing: 3px; text-transform: uppercase; }
+
+        /* CONTENT SECTIONS */
+        .container { max-width: 800px; margin: auto; padding: 40px 20px; }
+        .therapy-intro { text-align: center; margin-bottom: 50px; }
+        .therapy-intro p { font-size: 16px; color: #666; max-width: 600px; margin: 20px auto; }
+
+        /* SERVICE MENU */
+        .menu-grid { margin-top: 30px; border-top: 1px solid #ddd; }
+        .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #eee; transition: 0.3s; cursor: pointer; }
+        .menu-item:hover { padding-left: 10px; background: rgba(138, 154, 91, 0.05); }
+        .item-info b { display: block; font-size: 18px; }
+        .item-price { color: var(--sage); font-weight: 700; font-size: 18px; }
+
+        /* BOOKING GATE (MODAL) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.98); z-index: 9999; padding: 40px 20px; overflow-y: auto; }
+        input, select, textarea { width: 100%; padding: 16px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px; font-family: 'Montserrat', sans-serif; font-size: 16px; }
+        .btn-reserve { width: 100%; padding: 18px; background: var(--sage); color: white; border: none; border-radius: 40px; font-weight: 700; font-size: 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* FOOTER NAV */
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 1000; }
+        .bar-link { color: #888; font-size: 11px; text-align: center; cursor: pointer; text-decoration: none; }
+        .bar-link i { font-size: 22px; margin-bottom: 5px; color: var(--sage); }
+
+        #smartsupp-widget-container { bottom: 90px !important; }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1>Unwind Your Mind</h1>
+        <p>Heal Your Body</p>
+    </section>
+
+    <div class="container">
+        <section class="therapy-intro">
+            <h2>About the Therapy</h2>
+            <p>At Margaret Massage Hub, we believe in a holistic approach to wellness. Our sessions are designed to release neurological stress and restore the natural flow of energy throughout your body.</p>
+        </section>
+
+        <h3>Our Curated Services</h3>
+        <div class="menu-grid" id="service-menu">
+            </div>
+    </div>
+
+    <div id="booking-modal" class="modal">
+        <div style="max-width: 400px; margin: auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h2 style="margin:0;">Reserve Session</h2>
+                <i class="fas fa-times" onclick="closeModal()" style="font-size: 24px; color:#ccc; cursor:pointer;"></i>
+            </div>
+            
+            <p id="selected-service" style="font-weight:700; color:var(--sage);"></p>
+            
+            <input type="text" id="client_name" placeholder="Your Full Name">
+            <input type="email" id="client_email" placeholder="Email Address">
+            <input type="tel" id="client_phone" placeholder="Phone Number">
+            <select id="final_service">
+                </select>
+            <input type="date" id="book_date">
+            <button class="btn-reserve" onclick="sendBooking()">Confirm Appointment</button>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="bar-link" onclick="window.scrollTo(0,0)"><i class="fas fa-spa"></i><br>HOME</div>
+        <div class="bar-link" onclick="openModal('book')"><i class="fas fa-calendar-check"></i><br>BOOKING</div>
+        <div class="bar-link" onclick="window.scrollTo(0,document.body.scrollHeight)"><i class="fas fa-map-marker-alt"></i><br>LOCATION</div>
+    </div>
+
+<script>
+    // FIREBASE SETUP
+    const firebaseConfig = {
+        apiKey: "AIzaSyDp3h13LwtUlD7MiCkMys0EAgX5w2GGupc",
+        authDomain: "orixa-football-pro.firebaseapp.com",
+        projectId: "orixa-football-pro",
+        databaseURL: "https://orixa-football-pro-default-rtdb.firebaseio.com",
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const services = [
+        ["Duo massage", 80], ["Lingam massage", 100], ["Yoni massage", 100], ["Tantric massage", 80],
+        ["Nuru massage", 200], ["Prostate massage", 200], ["Soapy massage", 200], ["Deep tissue massage", 200],
+        ["Swedish massage", 150], ["Hot stone massage", 120], ["Aromatherapy massage", 120], ["Sports massage", 130],
+        ["Trigger point massage", 150], ["Reflexology", 120], ["Shiatsu massage", 120], ["Chair massage", 80], ["Thai massage", 140]
+    ];
+
+    // Load Menu
+    const menuEl = document.getElementById('service-menu');
+    const selectEl = document.getElementById('final_service');
+    
+    services.forEach(item => {
+        menuEl.innerHTML += `
+            <div class="menu-item" onclick="openModal('book', '${item[0]}')">
+                <div class="item-info"><b>${item[0]}</b></div>
+                <div class="item-price">$${item[1]}</div>
+            </div>`;
+        selectEl.innerHTML += `<option value="${item[0]}">${item[0]} ($${item[1]})</option>`;
+    });
+
+    window.openModal = function(type, serviceName = "") {
+        document.getElementById('booking-modal').style.display = 'block';
+        if(serviceName) {
+            document.getElementById('selected-service').innerText = "Selected Service: " + serviceName;
+            document.getElementById('final_service').value = serviceName;
+        }
+    };
+
+    window.closeModal = function() {
+        document.getElementById('booking-modal').style.display = 'none';
+    };
+
+    window.sendBooking = function() {
+        const name = document.getElementById('client_name').value;
+        const mail = document.getElementById('client_email').value;
+        const phone = document.getElementById('client_phone').value;
+        const date = document.getElementById('book_date').value;
+        const service = document.getElementById('final_service').value;
+
+        if(!name || !mail || !date) return alert("Please complete the required fields.");
+
+        db.ref('hub_realtime_bookings').push({
+            name: name,
+            email: mail,
+            phone: phone,
+            date: date,
+            service: service,
+            time: new Date().toLocaleString()
+        }).then(() => {
+            alert("Thank you, " + name + ". Your request has been sent to Margaret Massage Hub!");
+            closeModal();
+        });
+    };
+</script>
+
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = 'b561b44ffefb49aa584810c42983ccf091f55186';
+window.smartsupp||(function(d) {
+var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+c.type='text/javascript';c.charset='utf-8';c.async=true;
+c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+
+</body>
+</html>
