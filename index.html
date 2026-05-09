@@ -3,32 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Margaret Massage Hub | Unwind & Heal</title>
+    <title>Margaret Massage Hub | Pure Wellness</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root { --sage: #8a9a5b; --earth: #5f6e4a; --sand: #fdfcf8; --text: #333; }
         body { font-family: 'Montserrat', sans-serif; background: var(--sand); margin: 0; color: var(--text); padding-bottom: 80px; }
         
-        .hero { height: 50vh; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
+        .hero { height: 40vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?q=80&w=1000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
         
         .container { max-width: 800px; margin: auto; padding: 20px; }
-        
-        /* ILLUSTRATED MENU */
-        .service-card { background: #fff; border-radius: 15px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; border: 1px solid #eee; }
-        .service-img { width: 100%; height: 180px; object-fit: cover; }
-        .service-info { padding: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .service-info b { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--earth); }
-        .price { font-weight: 700; color: var(--sage); font-size: 20px; }
+        .section-title { font-family: 'Playfair Display', serif; text-align: center; color: var(--earth); margin: 40px 0 20px; font-size: 28px; }
+
+        /* FEATURED IMAGE CARDS */
+        .img-card { position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 20px; height: 150px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; }
+        .img-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .img-card:hover img { transform: scale(1.1); }
+        .img-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: #fff; display: flex; justify-content: space-between; align-items: flex-end; }
+
+        /* CLEAN LIST ITEMS */
+        .list-item { background: #fff; padding: 20px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; cursor: pointer; transition: 0.2s; }
+        .list-item:active { transform: scale(0.98); background: #f9f9f9; }
+        .list-item b { font-size: 16px; color: var(--earth); }
+        .list-item .price { color: var(--sage); font-weight: 700; }
 
         /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 30px 20px; overflow-y: auto; }
         input, select { width: 100%; padding: 16px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 16px; }
-        .btn-confirm { width: 100%; padding: 18px; background: var(--sage); color: white; border: none; border-radius: 40px; font-weight: 700; letter-spacing: 1px; cursor: pointer; }
+        .btn-confirm { width: 100%; padding: 18px; background: var(--sage); color: white; border: none; border-radius: 40px; font-weight: 700; cursor: pointer; }
 
         .bottom-bar { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 1000; }
         .bar-item { color: #888; font-size: 11px; text-align: center; cursor: pointer; }
@@ -38,19 +44,24 @@
 <body>
 
     <section class="hero">
-        <h1 style="font-family: 'Playfair Display'; font-size: 40px; margin: 0;">Unwind Your Mind</h1>
-        <p style="letter-spacing: 3px;">HEAL YOUR BODY</p>
+        <h1 style="font-family: 'Playfair Display'; font-size: 36px; margin: 0;">Margaret Massage Hub</h1>
+        <p style="letter-spacing: 3px; font-size: 12px;">UNWIND YOUR MIND • HEAL YOUR BODY</p>
     </section>
 
     <div class="container">
-        <h2 style="text-align:center; font-family:'Playfair Display'; margin: 40px 0;">Our Specialized Modalities</h2>
-        <div id="service-grid"></div>
+        <div class="section-title">Premium Modalities</div>
+        
+        <div id="visual-menu"></div>
+
+        <div class="section-title">Full Service Menu</div>
+        
+        <div id="list-menu"></div>
     </div>
 
     <div id="book-modal" class="modal">
         <div style="max-width: 450px; margin: auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h2 style="margin:0;">Finalize Booking</h2>
+                <h2 style="margin:0; font-family:'Playfair Display';">Finalize Booking</h2>
                 <i class="fas fa-times" onclick="closeM()" style="font-size:24px; color:#ccc;"></i>
             </div>
             <p id="sel-txt" style="font-weight:bold; color:var(--sage);"></p>
@@ -63,74 +74,90 @@
 
     <div class="bottom-bar">
         <div class="bar-item" onclick="window.scrollTo(0,0)"><i class="fas fa-spa"></i><br>HOME</div>
-        <div class="bar-item" onclick="openM('General Booking')"><i class="fas fa-calendar-alt"></i><br>BOOK</div>
+        <div class="bar-item" onclick="openM('General Inquiry')"><i class="fas fa-calendar-alt"></i><br>BOOK</div>
         <div class="bar-item" onclick="smartsupp('chat:open')"><i class="fas fa-comments"></i><br>SUPPORT</div>
     </div>
 
 <script>
-    const firebaseConfig = {
+    const fbConfig = {
         apiKey: "AIzaSyDp3h13LwtUlD7MiCkMys0EAgX5w2GGupc",
         authDomain: "orixa-football-pro.firebaseapp.com",
         projectId: "orixa-football-pro",
         databaseURL: "https://orixa-football-pro-default-rtdb.firebaseio.com",
     };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
+    firebase.initializeApp(fbConfig);
+    const db = firebase.database();
 
-    // Menu with illustrative images
-    const menuItems = [
-        { name: "Duo massage", price: 80, img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=500" },
-        { name: "Tantric massage", price: 80, img: "https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?q=80&w=500" },
-        { name: "Deep tissue massage", price: 200, img: "https://images.unsplash.com/photo-1519824145371-296894a0daa9?q=80&w=500" },
-        { name: "Swedish massage", price: 150, img: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=500" },
-        { name: "Hot stone massage", price: 120, img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=500" },
-        { name: "Nuru & Soapy massage", price: 200, img: "https://images.unsplash.com/photo-1552693673-1bf958298935?q=80&w=500" },
-        { name: "Reflexology & Thai", price: 140, img: "https://images.unsplash.com/photo-1537333364d5b-0402f68f559f?q=80&w=500" }
+    // COMPLETE 17 SERVICES
+    const allServices = [
+        { n: "Duo massage", p: 80, img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=500&q=60" },
+        { n: "Lingam massage", p: 100, img: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=500&q=60" },
+        { n: "Yoni massage", p: 100, img: "https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?auto=format&fit=crop&w=500&q=60" },
+        { n: "Tantric massage", p: 80, img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=500&q=60" },
+        { n: "Nuru massage", p: 200, img: "https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=500&q=60" },
+        { n: "Prostate massage", p: 200 },
+        { n: "Soapy massage", p: 200 },
+        { n: "Deep tissue massage", p: 200 },
+        { n: "Swedish massage", p: 150 },
+        { n: "Hot stone massage", p: 120 },
+        { n: "Aromatherapy massage", p: 120 },
+        { n: "Sports massage", p: 130 },
+        { n: "Trigger point massage", p: 150 },
+        { n: "Reflexology", p: 120 },
+        { n: "Shiatsu massage", p: 120 },
+        { n: "Chair massage", p: 80 },
+        { n: "Thai massage", p: 140 }
     ];
 
-    const grid = document.getElementById('service-grid');
-    menuItems.forEach(item => {
-        grid.innerHTML += `
-            <div class="service-card" onclick="openM('${item.name}')">
-                <img src="${item.img}" class="service-img">
-                <div class="service-info">
-                    <b>${item.name}</b>
-                    <span class="price">$${item.price}</span>
-                </div>
-            </div>
-        `;
+    const visualWrap = document.getElementById('visual-menu');
+    const listWrap = document.getElementById('list-menu');
+
+    allServices.forEach((s, index) => {
+        if(index < 5) {
+            visualWrap.innerHTML += `
+                <div class="img-card" onclick="openM('${s.n}')">
+                    <img src="${s.img}">
+                    <div class="img-overlay">
+                        <b>${s.n}</b>
+                        <span>$${s.p}</span>
+                    </div>
+                </div>`;
+        } else {
+            listWrap.innerHTML += `
+                <div class="list-item" onclick="openM('${s.n}')">
+                    <b>${s.n}</b>
+                    <span class="price">$${s.p}</span>
+                </div>`;
+        }
     });
 
-    let currentService = "";
+    let activeService = "";
 
-    window.openM = function(name) {
-        currentService = name;
-        document.getElementById('sel-txt').innerText = "Service: " + name;
+    window.openM = (name) => {
+        activeService = name;
+        document.getElementById('sel-txt').innerText = "Selected: " + name;
         document.getElementById('book-modal').style.display = 'block';
-    }
+    };
 
-    window.closeM = function() { document.getElementById('book-modal').style.display = 'none'; }
+    window.closeM = () => { document.getElementById('book-modal').style.display = 'none'; };
 
-    window.processPayment = function() {
+    window.processPayment = () => {
         const name = document.getElementById('c-name').value;
         const phone = document.getElementById('c-phone').value;
-        if(!name || !phone) return alert("Please provide contact details.");
+        if(!name || !phone) return alert("Please fill in your details.");
 
-        // Save to Firebase
-        database.ref('margaret_leads').push({
+        db.ref('margaret_leads_v2').push({
             name: name,
             phone: phone,
-            service: currentService,
-            date: document.getElementById('c-date').value,
+            service: activeService,
             time: new Date().toLocaleString()
         }).then(() => {
-            // THE AUTOMATION: Close modal, open chat, and send a message
             closeM();
             smartsupp('chat:open');
-            smartsupp('chat:message', "Hello Margaret, I just booked " + currentService + ". How can I make my payment?");
-            alert("Booking Saved! We are opening the support chat to finalize your payment.");
+            smartsupp('chat:message', "Hi Margaret, I'm booking " + activeService + ". I'm ready to pay.");
+            alert("Booking Saved! Opening chat for payment details.");
         });
-    }
+    };
 </script>
 
 <script type="text/javascript">
