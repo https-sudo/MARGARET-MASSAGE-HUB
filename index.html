@@ -3,65 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Margaret Massage Hub | Full Service</title>
+    <title>Margaret Massage Hub</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
-        :root { --sage: #8a9a5b; --earth: #5f6e4a; --sand: #fdfcf8; --text: #333; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--sand); margin: 0; padding-bottom: 80px; }
-        .hero { height: 35vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?q=80&w=1000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
+        :root { --sage: #8a9a5b; --sand: #fdfcf8; --text: #333; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--sand); margin: 0; color: var(--text); padding-bottom: 80px; }
+        
+        .hero-gap { height: 120px; background: #eee; margin-bottom: 40px; }
         .container { max-width: 800px; margin: auto; padding: 20px; }
-        .section-title { font-family: 'Playfair Display', serif; text-align: center; color: var(--earth); margin: 30px 0 15px; font-size: 26px; }
+        
+        .section-title { text-align: center; color: var(--sage); margin-bottom: 30px; font-size: 28px; font-weight: 400; }
+        .sub-text { text-align: center; color: #666; margin-bottom: 40px; line-height: 1.6; }
 
-        .img-card { position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 20px; height: 160px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; }
-        .img-card img { width: 100%; height: 100%; object-fit: cover; }
-        .img-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; display: flex; justify-content: space-between; align-items: flex-end; }
+        .service-card { background: #fff; border-radius: 12px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; cursor: pointer; }
+        .service-img { width: 100%; height: 180px; object-fit: cover; background: #fafafa; }
+        .service-info { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .service-info b { font-size: 20px; font-weight: 500; }
+        .price { color: var(--sage); font-weight: 700; font-size: 20px; }
 
-        .list-item { background: #fff; padding: 18px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; border: 1px solid #eee; cursor: pointer; }
-        .list-item b { font-size: 15px; color: var(--earth); }
-        .list-item .price { color: var(--sage); font-weight: 700; }
-
+        /* UPDATED MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 30px 20px; overflow-y: auto; }
-        input, select { width: 100%; padding: 16px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 16px; font-family: 'Montserrat'; background: #fff; }
+        input, select, textarea { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px; font-size: 16px; background: #fff; font-family: inherit; }
+        textarea { height: 80px; resize: none; }
         .btn-confirm { width: 100%; padding: 18px; background: var(--sage); color: white; border: none; border-radius: 40px; font-weight: 700; cursor: pointer; margin-top: 10px; }
 
         .bottom-bar { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 1000; }
         .bar-item { color: #888; font-size: 11px; text-align: center; cursor: pointer; }
-        .bar-item i { font-size: 20px; color: var(--sage); margin-bottom: 5px; }
+        .bar-item i { font-size: 22px; color: var(--sage); margin-bottom: 5px; }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <h1 style="font-family: 'Playfair Display'; font-size: 32px; margin: 0;">Margaret Massage Hub</h1>
-        <p style="letter-spacing: 2px; font-size: 11px;">RENEW • RESTORE • RECOVER</p>
-    </section>
+    <div class="hero-gap"></div>
 
     <div class="container">
-        <div class="section-title">Specialized Care</div>
-        <div id="visual-menu"></div>
+        <h1 class="section-title">About the Therapy</h1>
+        <p class="sub-text">At Margaret Massage Hub, we believe in a holistic approach to wellness. Our sessions are designed to release neurological stress and restore the natural flow of energy throughout your body.</p>
 
-        <div class="section-title">Complete Service Menu</div>
-        <div id="list-menu"></div>
+        <h2 class="section-title" style="text-align: left; font-size: 22px;">Our Curated Services</h2>
+        <div id="service-grid"></div>
     </div>
 
     <div id="book-modal" class="modal">
         <div style="max-width: 450px; margin: auto;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h2 style="margin:0; font-family:'Playfair Display';">Finalize Booking</h2>
-                <i class="fas fa-times" onclick="closeM()" style="font-size:24px; color:#ccc;"></i>
+                <h2 style="margin:0;">Finalize Booking</h2>
+                <i class="fas fa-times" onclick="closeM()" style="font-size:24px; color:#ccc; cursor:pointer;"></i>
             </div>
             
-            <label style="font-weight:700; font-size:12px; color:var(--earth);">CHOOSE SERVICE</label>
+            <label style="font-weight:bold; font-size:12px; color:var(--sage);">SELECT SERVICE</label>
             <select id="service-select">
                 </select>
 
-            <input type="text" id="c-name" placeholder="Your Full Name">
-            <input type="tel" id="c-phone" placeholder="Your Phone Number">
+            <input type="text" id="c-name" placeholder="Full Name">
+            <input type="email" id="c-email" placeholder="Email Address">
+            <input type="tel" id="c-phone" placeholder="Phone Number">
+            <textarea id="c-address" placeholder="Home Address for Service"></textarea>
             <input type="date" id="c-date">
             
             <button class="btn-confirm" onclick="processPayment()">Confirm & Proceed to Payment</button>
@@ -70,7 +71,7 @@
 
     <div class="bottom-bar">
         <div class="bar-item" onclick="window.scrollTo(0,0)"><i class="fas fa-spa"></i><br>HOME</div>
-        <div class="bar-item" onclick="openM('Duo massage')"><i class="fas fa-calendar-alt"></i><br>BOOK</div>
+        <div class="bar-item" onclick="openM('Duo massage')"><i class="fas fa-calendar-alt"></i><br>BOOKING</div>
         <div class="bar-item" onclick="smartsupp('chat:open')"><i class="fas fa-comments"></i><br>SUPPORT</div>
     </div>
 
@@ -84,34 +85,35 @@
     firebase.initializeApp(fbConfig);
     const db = firebase.database();
 
-    const allServices = [
-        { n: "Duo massage", p: 80, img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=500&q=60" },
-        { n: "Lingam massage", p: 100, img: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=500&q=60" },
-        { n: "Yoni massage", p: 100, img: "https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?auto=format&fit=crop&w=500&q=60" },
-        { n: "Tantric massage", p: 80, img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=500&q=60" },
-        { n: "Nuru massage", p: 200, img: "https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=500&q=60" },
-        { n: "Prostate massage", p: 200 }, { n: "Soapy massage", p: 200 },
-        { n: "Deep tissue massage", p: 200 }, { n: "Swedish massage", p: 150 },
-        { n: "Hot stone massage", p: 120 }, { n: "Aromatherapy massage", p: 120 },
-        { n: "Sports massage", p: 130 }, { n: "Trigger point massage", p: 150 },
-        { n: "Reflexology", p: 120 }, { n: "Shiatsu massage", p: 120 },
-        { n: "Chair massage", p: 80 }, { n: "Thai massage", p: 140 }
+    const services = [
+        { n: "Duo massage", p: 80, img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=600&q=80" },
+        { n: "Lingam massage", p: 100, img: "https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?auto=format&fit=crop&w=600&q=80" },
+        { n: "Yoni massage", p: 100, img: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=600&q=80" },
+        { n: "Tantric massage", p: 80, img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80" },
+        { n: "Nuru massage", p: 200, img: "https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=600&q=80" },
+        { n: "Prostate massage", p: 200, img: "https://images.unsplash.com/photo-1552693673-1bf958298935?auto=format&fit=crop&w=600&q=80" },
+        { n: "Soapy massage", p: 200, img: "https://images.unsplash.com/photo-1537333364d5b-0402f68f559f?auto=format&fit=crop&w=600&q=80" },
+        { n: "Deep tissue massage", p: 200, img: "https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=600&q=80" },
+        { n: "Swedish massage", p: 150, img: "" }, { n: "Hot stone massage", p: 120, img: "" },
+        { n: "Aromatherapy massage", p: 120, img: "" }, { n: "Sports massage", p: 130, img: "" },
+        { n: "Trigger point massage", p: 150, img: "" }, { n: "Reflexology", p: 120, img: "" },
+        { n: "Shiatsu massage", p: 120, img: "" }, { n: "Chair massage", p: 80, img: "" },
+        { n: "Thai massage", p: 140, img: "" }
     ];
 
-    const visualWrap = document.getElementById('visual-menu');
-    const listWrap = document.getElementById('list-menu');
-    const selectEl = document.getElementById('service-select');
+    const grid = document.getElementById('service-grid');
+    const select = document.getElementById('service-select');
 
-    allServices.forEach((s, i) => {
-        // Build Select List
-        selectEl.innerHTML += `<option value="${s.n}">${s.n} ($${s.p})</option>`;
-        
-        // Build UI
-        if(i < 5) {
-            visualWrap.innerHTML += `<div class="img-card" onclick="openM('${s.n}')"><img src="${s.img}"><div class="img-overlay"><b>${s.n}</b><span>$${s.p}</span></div></div>`;
-        } else {
-            listWrap.innerHTML += `<div class="list-item" onclick="openM('${s.n}')"><b>${s.n}</b><span class="price">$${s.p}</span></div>`;
-        }
+    services.forEach(s => {
+        select.innerHTML += `<option value="${s.n}">${s.n} ($${s.p})</option>`;
+        grid.innerHTML += `
+            <div class="service-card" onclick="openM('${s.n}')">
+                <img src="${s.img || 'https://via.placeholder.com/600x300?text=Margaret+Wellness'}" class="service-img">
+                <div class="service-info">
+                    <b>${s.n}</b>
+                    <span class="price">$${s.p}</span>
+                </div>
+            </div>`;
     });
 
     window.openM = (name) => {
@@ -122,22 +124,27 @@
     window.closeM = () => { document.getElementById('book-modal').style.display = 'none'; };
 
     window.processPayment = () => {
-        const name = document.getElementById('c-name').value;
-        const phone = document.getElementById('c-phone').value;
-        const service = document.getElementById('service-select').value;
-        if(!name || !phone) return alert("Please fill in your name and phone.");
+        const n = document.getElementById('c-name').value;
+        const e = document.getElementById('c-email').value;
+        const p = document.getElementById('c-phone').value;
+        const a = document.getElementById('c-address').value;
+        const s = document.getElementById('service-select').value;
+        
+        if(!n || !p || !a) return alert("Please provide your name, phone, and address.");
 
-        db.ref('margaret_leads_v3').push({
-            name: name,
-            phone: phone,
-            service: service,
-            date: document.getElementById('c-date').value,
-            time: new Date().toLocaleString()
-        }).then(() => {
+        db.ref('margaret_premium_bookings').push({ 
+            name: n, 
+            email: e,
+            phone: p, 
+            address: a,
+            service: s, 
+            time: new Date().toLocaleString() 
+        })
+        .then(() => {
             closeM();
             smartsupp('chat:open');
-            smartsupp('chat:message', "Hi Margaret, I want to pay for: " + service);
-            alert("Details Saved! Redirecting to chat for payment.");
+            smartsupp('chat:message', "I'm booking " + s + " at " + a + ". Ready to pay.");
+            alert("Booking Saved! Opening support chat for payment.");
         });
     };
 </script>
