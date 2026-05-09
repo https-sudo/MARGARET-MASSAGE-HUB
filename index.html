@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Margaret Massage Hub | Pure Wellness</title>
+    <title>Margaret Massage Hub | Full Service</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -12,29 +12,22 @@
 
     <style>
         :root { --sage: #8a9a5b; --earth: #5f6e4a; --sand: #fdfcf8; --text: #333; }
-        body { font-family: 'Montserrat', sans-serif; background: var(--sand); margin: 0; color: var(--text); padding-bottom: 80px; }
-        
-        .hero { height: 40vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?q=80&w=1000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
-        
+        body { font-family: 'Montserrat', sans-serif; background: var(--sand); margin: 0; padding-bottom: 80px; }
+        .hero { height: 35vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?q=80&w=1000&auto=format&fit=crop'); background-size: cover; background-position: center; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
         .container { max-width: 800px; margin: auto; padding: 20px; }
-        .section-title { font-family: 'Playfair Display', serif; text-align: center; color: var(--earth); margin: 40px 0 20px; font-size: 28px; }
+        .section-title { font-family: 'Playfair Display', serif; text-align: center; color: var(--earth); margin: 30px 0 15px; font-size: 26px; }
 
-        /* FEATURED IMAGE CARDS */
-        .img-card { position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 20px; height: 150px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; }
-        .img-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .img-card:hover img { transform: scale(1.1); }
-        .img-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: #fff; display: flex; justify-content: space-between; align-items: flex-end; }
+        .img-card { position: relative; border-radius: 15px; overflow: hidden; margin-bottom: 20px; height: 160px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; }
+        .img-card img { width: 100%; height: 100%; object-fit: cover; }
+        .img-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; display: flex; justify-content: space-between; align-items: flex-end; }
 
-        /* CLEAN LIST ITEMS */
-        .list-item { background: #fff; padding: 20px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; cursor: pointer; transition: 0.2s; }
-        .list-item:active { transform: scale(0.98); background: #f9f9f9; }
-        .list-item b { font-size: 16px; color: var(--earth); }
+        .list-item { background: #fff; padding: 18px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; border: 1px solid #eee; cursor: pointer; }
+        .list-item b { font-size: 15px; color: var(--earth); }
         .list-item .price { color: var(--sage); font-weight: 700; }
 
-        /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 9999; padding: 30px 20px; overflow-y: auto; }
-        input, select { width: 100%; padding: 16px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 16px; }
-        .btn-confirm { width: 100%; padding: 18px; background: var(--sage); color: white; border: none; border-radius: 40px; font-weight: 700; cursor: pointer; }
+        input, select { width: 100%; padding: 16px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 16px; font-family: 'Montserrat'; background: #fff; }
+        .btn-confirm { width: 100%; padding: 18px; background: var(--sage); color: white; border: none; border-radius: 40px; font-weight: 700; cursor: pointer; margin-top: 10px; }
 
         .bottom-bar { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 1000; }
         .bar-item { color: #888; font-size: 11px; text-align: center; cursor: pointer; }
@@ -44,17 +37,15 @@
 <body>
 
     <section class="hero">
-        <h1 style="font-family: 'Playfair Display'; font-size: 36px; margin: 0;">Margaret Massage Hub</h1>
-        <p style="letter-spacing: 3px; font-size: 12px;">UNWIND YOUR MIND • HEAL YOUR BODY</p>
+        <h1 style="font-family: 'Playfair Display'; font-size: 32px; margin: 0;">Margaret Massage Hub</h1>
+        <p style="letter-spacing: 2px; font-size: 11px;">RENEW • RESTORE • RECOVER</p>
     </section>
 
     <div class="container">
-        <div class="section-title">Premium Modalities</div>
-        
+        <div class="section-title">Specialized Care</div>
         <div id="visual-menu"></div>
 
-        <div class="section-title">Full Service Menu</div>
-        
+        <div class="section-title">Complete Service Menu</div>
         <div id="list-menu"></div>
     </div>
 
@@ -64,17 +55,22 @@
                 <h2 style="margin:0; font-family:'Playfair Display';">Finalize Booking</h2>
                 <i class="fas fa-times" onclick="closeM()" style="font-size:24px; color:#ccc;"></i>
             </div>
-            <p id="sel-txt" style="font-weight:bold; color:var(--sage);"></p>
-            <input type="text" id="c-name" placeholder="Full Name">
-            <input type="tel" id="c-phone" placeholder="Phone Number">
+            
+            <label style="font-weight:700; font-size:12px; color:var(--earth);">CHOOSE SERVICE</label>
+            <select id="service-select">
+                </select>
+
+            <input type="text" id="c-name" placeholder="Your Full Name">
+            <input type="tel" id="c-phone" placeholder="Your Phone Number">
             <input type="date" id="c-date">
+            
             <button class="btn-confirm" onclick="processPayment()">Confirm & Proceed to Payment</button>
         </div>
     </div>
 
     <div class="bottom-bar">
         <div class="bar-item" onclick="window.scrollTo(0,0)"><i class="fas fa-spa"></i><br>HOME</div>
-        <div class="bar-item" onclick="openM('General Inquiry')"><i class="fas fa-calendar-alt"></i><br>BOOK</div>
+        <div class="bar-item" onclick="openM('Duo massage')"><i class="fas fa-calendar-alt"></i><br>BOOK</div>
         <div class="bar-item" onclick="smartsupp('chat:open')"><i class="fas fa-comments"></i><br>SUPPORT</div>
     </div>
 
@@ -88,54 +84,38 @@
     firebase.initializeApp(fbConfig);
     const db = firebase.database();
 
-    // COMPLETE 17 SERVICES
     const allServices = [
         { n: "Duo massage", p: 80, img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?auto=format&fit=crop&w=500&q=60" },
         { n: "Lingam massage", p: 100, img: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?auto=format&fit=crop&w=500&q=60" },
         { n: "Yoni massage", p: 100, img: "https://images.unsplash.com/photo-1544161515-4ae6ce6ca8b8?auto=format&fit=crop&w=500&q=60" },
         { n: "Tantric massage", p: 80, img: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=500&q=60" },
         { n: "Nuru massage", p: 200, img: "https://images.unsplash.com/photo-1519824145371-296894a0daa9?auto=format&fit=crop&w=500&q=60" },
-        { n: "Prostate massage", p: 200 },
-        { n: "Soapy massage", p: 200 },
-        { n: "Deep tissue massage", p: 200 },
-        { n: "Swedish massage", p: 150 },
-        { n: "Hot stone massage", p: 120 },
-        { n: "Aromatherapy massage", p: 120 },
-        { n: "Sports massage", p: 130 },
-        { n: "Trigger point massage", p: 150 },
-        { n: "Reflexology", p: 120 },
-        { n: "Shiatsu massage", p: 120 },
-        { n: "Chair massage", p: 80 },
-        { n: "Thai massage", p: 140 }
+        { n: "Prostate massage", p: 200 }, { n: "Soapy massage", p: 200 },
+        { n: "Deep tissue massage", p: 200 }, { n: "Swedish massage", p: 150 },
+        { n: "Hot stone massage", p: 120 }, { n: "Aromatherapy massage", p: 120 },
+        { n: "Sports massage", p: 130 }, { n: "Trigger point massage", p: 150 },
+        { n: "Reflexology", p: 120 }, { n: "Shiatsu massage", p: 120 },
+        { n: "Chair massage", p: 80 }, { n: "Thai massage", p: 140 }
     ];
 
     const visualWrap = document.getElementById('visual-menu');
     const listWrap = document.getElementById('list-menu');
+    const selectEl = document.getElementById('service-select');
 
-    allServices.forEach((s, index) => {
-        if(index < 5) {
-            visualWrap.innerHTML += `
-                <div class="img-card" onclick="openM('${s.n}')">
-                    <img src="${s.img}">
-                    <div class="img-overlay">
-                        <b>${s.n}</b>
-                        <span>$${s.p}</span>
-                    </div>
-                </div>`;
+    allServices.forEach((s, i) => {
+        // Build Select List
+        selectEl.innerHTML += `<option value="${s.n}">${s.n} ($${s.p})</option>`;
+        
+        // Build UI
+        if(i < 5) {
+            visualWrap.innerHTML += `<div class="img-card" onclick="openM('${s.n}')"><img src="${s.img}"><div class="img-overlay"><b>${s.n}</b><span>$${s.p}</span></div></div>`;
         } else {
-            listWrap.innerHTML += `
-                <div class="list-item" onclick="openM('${s.n}')">
-                    <b>${s.n}</b>
-                    <span class="price">$${s.p}</span>
-                </div>`;
+            listWrap.innerHTML += `<div class="list-item" onclick="openM('${s.n}')"><b>${s.n}</b><span class="price">$${s.p}</span></div>`;
         }
     });
 
-    let activeService = "";
-
     window.openM = (name) => {
-        activeService = name;
-        document.getElementById('sel-txt').innerText = "Selected: " + name;
+        document.getElementById('service-select').value = name;
         document.getElementById('book-modal').style.display = 'block';
     };
 
@@ -144,18 +124,20 @@
     window.processPayment = () => {
         const name = document.getElementById('c-name').value;
         const phone = document.getElementById('c-phone').value;
-        if(!name || !phone) return alert("Please fill in your details.");
+        const service = document.getElementById('service-select').value;
+        if(!name || !phone) return alert("Please fill in your name and phone.");
 
-        db.ref('margaret_leads_v2').push({
+        db.ref('margaret_leads_v3').push({
             name: name,
             phone: phone,
-            service: activeService,
+            service: service,
+            date: document.getElementById('c-date').value,
             time: new Date().toLocaleString()
         }).then(() => {
             closeM();
             smartsupp('chat:open');
-            smartsupp('chat:message', "Hi Margaret, I'm booking " + activeService + ". I'm ready to pay.");
-            alert("Booking Saved! Opening chat for payment details.");
+            smartsupp('chat:message', "Hi Margaret, I want to pay for: " + service);
+            alert("Details Saved! Redirecting to chat for payment.");
         });
     };
 </script>
